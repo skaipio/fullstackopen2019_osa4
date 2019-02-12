@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+content-type: application/json
+
+{
+    "title": "Mixins are considered harmful",
+    "author": "Dan Abramov",
+    "url": "https://reactjs.org/blog/2016/07/13/mixins-considered-harmful.html",
+    "likes": 999
+}

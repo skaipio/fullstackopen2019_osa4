@@ -22,9 +22,27 @@ test('GET /api/blogs returns all blogs', async () => {
     .expect(200)
     .expect('Content-Type', /application\/json/)
 
-  console.log(response.body)
-
   expect(response.body.length).toBe(blogMocks.blogs.length)
+})
+
+test('POST /api/blogs saves a new note', async () => {
+  await api
+    .post('/api/blogs')
+    .send(blogMocks.singleBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api
+    .get('/api/blogs')
+
+  const blogsWithoutIds = response.body.map(blog => {
+    const blogWithoutId = {...blog}
+    delete blogWithoutId.id
+    return blogWithoutId
+  })
+
+  expect(response.body.length).toBe(blogMocks.blogs.length + 1)
+  expect(blogsWithoutIds).toContainEqual(blogMocks.singleBlog)
 })
 
 test('returned blogs have id field', async () => {

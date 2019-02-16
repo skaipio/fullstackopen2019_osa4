@@ -1,5 +1,5 @@
 const listHelper = require('../utils/list_helper')
-const blogMocks = require('./blog_mocks')
+const blogMocks = require('./list_mocks')
 
 test('dummy returns one', () => {
   const blogs = []

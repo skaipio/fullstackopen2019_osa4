@@ -1,5 +1,5 @@
 const listHelper = require('../utils/list_helper')
-const blogLists = require('./blogLists')
+const blogMocks = require('./blog_mocks')
 
 test('dummy returns one', () => {
   const blogs = []
@@ -10,29 +10,29 @@ test('dummy returns one', () => {
 
 describe('total likes', () => {
   it('of empty likes is zero', () => {
-    const totalLikes = listHelper.totalLikes(blogLists.emptyBlogsList)
+    const totalLikes = listHelper.totalLikes(blogMocks.emptyBlogsList)
     expect(totalLikes).toBe(0)
   })
 
   it('equals the likes of the single blog when there is only one', () => {
-    const totalLikes = listHelper.totalLikes(blogLists.listWithOneBlog)
+    const totalLikes = listHelper.totalLikes(blogMocks.listWithOneBlog)
     expect(totalLikes).toBe(999)
   })
 
   it('equals the sum of likes of all the blogs in the list', () => {
-    const totalLikes = listHelper.totalLikes(blogLists.listWithMultipleBlogs)
+    const totalLikes = listHelper.totalLikes(blogMocks.listWithMultipleBlogs)
     expect(totalLikes).toBe(999 + 12350360 + 5)
   })
 })
 
 describe('favorite blog', () => {
   it('in empty blog list is null', () => {
-    const favoriteBlog = listHelper.favoriteBlog(blogLists.emptyBlogsList)
+    const favoriteBlog = listHelper.favoriteBlog(blogMocks.emptyBlogsList)
     expect(favoriteBlog).toBe(null)
   })
 
   it('equals the single blog when there is only one', () => {
-    const favoriteBlog = listHelper.favoriteBlog(blogLists.listWithOneBlog)
+    const favoriteBlog = listHelper.favoriteBlog(blogMocks.listWithOneBlog)
     expect(favoriteBlog).toEqual({
       _id: '5c62d6dba96a499808a1f148',
       title: 'Mixins are considered harmful',
@@ -43,7 +43,7 @@ describe('favorite blog', () => {
   })
 
   it('to be the blog with most likes when there are multiple blogs', () => {
-    const favoriteBlog = listHelper.favoriteBlog(blogLists.listWithMultipleBlogs)
+    const favoriteBlog = listHelper.favoriteBlog(blogMocks.listWithMultipleBlogs)
     expect(favoriteBlog).toEqual({
       _id: '5c62d9f9c2ee409c86f956e1',
       title: 'r/2meirl4meirl is sad but funny',
@@ -56,7 +56,7 @@ describe('favorite blog', () => {
 
 describe('most blogs', () => {
   it('returns author with the greatest count of authored blogs', () => {
-    const author = listHelper.mostBlogs(blogLists.borrowedBlogList)
+    const author = listHelper.mostBlogs(blogMocks.blogs)
     expect(author).toEqual({
       author: 'Robert C. Martin',
       blogs: 3
@@ -64,7 +64,7 @@ describe('most blogs', () => {
   })
 
   it('returns any of the authors that have most blogs with an equal count', () => {
-    const author = listHelper.mostBlogs(blogLists.borrowedBlogListWithDuplicateDijkstra)
+    const author = listHelper.mostBlogs(blogMocks.blogListWithDuplicateDijkstra)
     const expectedAuthors = [
       {
         author: 'Robert C. Martin',
@@ -81,7 +81,7 @@ describe('most blogs', () => {
 
 describe('most likes', () => {
   it('returns author with the most total likes', () => {
-    const author = listHelper.mostLikes(blogLists.borrowedBlogList)
+    const author = listHelper.mostLikes(blogMocks.blogs)
     expect(author).toEqual({
       author: 'Edsger W. Dijkstra',
       likes: 17

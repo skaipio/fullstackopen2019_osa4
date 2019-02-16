@@ -25,7 +25,7 @@ const listWithMultipleBlogs = listWithOneBlog.concat([
   }
 ])
 
-const borrowedBlogList = [
+const blogs = [
   {
     _id: "5a422a851b54a676234d17f7",
     title: "React patterns",
@@ -76,7 +76,7 @@ const borrowedBlogList = [
   }
 ]
 
-const borrowedBlogListWithDuplicateDijkstra = borrowedBlogList.concat(
+const blogListWithDuplicateDijkstra = blogs.concat(
   {
     _id: "5a422b3a1b54a676234d17f9",
     title: "Canonical string reduction",
@@ -91,6 +91,6 @@ module.exports = {
   emptyBlogsList,
   listWithOneBlog,
   listWithMultipleBlogs,
-  borrowedBlogList,
-  borrowedBlogListWithDuplicateDijkstra
+  blogs,
+  blogListWithDuplicateDijkstra
 }

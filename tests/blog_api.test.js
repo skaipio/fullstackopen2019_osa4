@@ -25,6 +25,15 @@ test('GET /api/blogs returns all blogs', async () => {
   expect(response.body.length).toBe(blogMocks.blogs.length)
 })
 
+test('returned blogs have id field', async () => {
+  const response = await api
+    .get('/api/blogs')
+
+  const blog = response.body[0]
+
+  expect(blog.id).toBeDefined()
+})
+
 test('POST /api/blogs saves a new note', async () => {
   await api
     .post('/api/blogs')
@@ -45,13 +54,23 @@ test('POST /api/blogs saves a new note', async () => {
   expect(blogsWithoutIds).toContainEqual(blogMocks.singleBlog)
 })
 
-test('returned blogs have id field', async () => {
-  const response = await api
+test('blog likes field is by default set to 0', async () => {
+  const blogWithoutLikes = {...blogMocks.singleBlog}
+  delete blogWithoutLikes.likes
+
+  const newBlogResponse = await api
+    .post('/api/blogs')
+    .send(blogWithoutLikes)
+
+  const { body } = await api
     .get('/api/blogs')
 
-  const blog = response.body[0]
-
-  expect(blog.id).toBeDefined()
+  for (const blog of body) {
+    expect(blog.likes).toBeDefined()
+    if (blog.id === newBlogResponse.id) {
+      expect(blog.likes).toBe(0)
+    }
+  }
 })
 
 afterAll(async () => {

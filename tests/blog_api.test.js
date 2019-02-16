@@ -22,7 +22,18 @@ test('GET /api/blogs returns all blogs', async () => {
     .expect(200)
     .expect('Content-Type', /application\/json/)
 
+  console.log(response.body)
+
   expect(response.body.length).toBe(blogMocks.blogs.length)
+})
+
+test('returned blogs have id field', async () => {
+  const response = await api
+    .get('/api/blogs')
+
+  const blog = response.body[0]
+
+  expect(blog.id).toBeDefined()
 })
 
 afterAll(async () => {

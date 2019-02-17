@@ -1,6 +1,17 @@
 const blogRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+const getDecodedToken = (request) => {
+  const authorization = request.get('authorization')
+
+  if (!authorization) return null
+
+  const [header, token, ...rest] = authorization.match(/[Bb]earer\s+(.+)/)
+
+  return jwt.verify(token, process.env.SECRET)
+}
 
 blogRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -13,8 +24,14 @@ blogRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
   try {
-    const users = await User.find({})
-    const user = users[0]
+    const decodedToken = getDecodedToken(request)
+    if (!decodedToken) {
+      return response.status(401).json({
+        error: 'invalid token'
+      })
+    }
+
+    const user = await User.findById(decodedToken.id)
     blog.user = user._id
     const newBlog = await blog.save()
 

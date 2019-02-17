@@ -6,7 +6,19 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get('authorization')
+  
+  if (authorization) {
+    const [header, token, ...rest] = authorization.match(/[Bb]earer\s+(.+)/)
+    request.token = token
+  }
+
+  next()
+}
+
 
 module.exports = {
-  errorHandler
+  errorHandler,
+  tokenExtractor
 }

@@ -5,7 +5,7 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 const blogMocks = require('./blog_mocks')
 
-jest.setTimeout(30000)
+jest.setTimeout(10000)
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -92,6 +92,24 @@ describe('POST /api/blogs', () => {
         expect(blog.likes).toBe(0)
       }
     }
+  })
+})
+
+describe('DELETE /api/blogs/:id', () => {
+  test('removes blog post', async () => {
+    let response = await api
+      .get('/api/blogs')
+
+    const blogId = response.body[0].id
+
+    await api
+      .delete(`/api/blogs/${blogId}`)
+      .expect(204)
+
+    response = await api
+      .get('/api/blogs')
+  
+    expect(response.body.length).toBe(blogMocks.blogs.length - 1)
   })
 })
 

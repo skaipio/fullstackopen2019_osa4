@@ -95,6 +95,32 @@ describe('POST /api/blogs', () => {
   })
 })
 
+describe('PUT /api/blogs/:id', () => {
+  test('updates an existing blog', async () => {
+    let response = await api
+      .get('/api/blogs')
+
+    const oldBlog = response.body[0]
+  
+    const blog = {
+      ...oldBlog,
+      likes: oldBlog.likes + 1
+    }
+
+    await api
+      .put(`/api/blogs/${oldBlog.id}`)
+      .send(blog)
+      .expect(200)
+
+    response = await api
+      .get('/api/blogs')
+
+    const updatedBlog = response.body.find(blog => blog.id === oldBlog.id)
+  
+    expect(updatedBlog.likes).toBe(blog.likes)
+  })
+})
+
 describe('DELETE /api/blogs/:id', () => {
   test('removes blog post', async () => {
     let response = await api

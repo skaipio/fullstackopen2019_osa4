@@ -54,6 +54,24 @@ test('POST /api/blogs saves a new note', async () => {
   expect(blogsWithoutIds).toContainEqual(blogMocks.singleBlog)
 })
 
+test('POST /api/blogs returns 400 Bad Request if title or url is not set', async () => {
+  const blogWithoutTitle = {...blogMocks.singleBlog}
+  delete blogWithoutTitle.title
+
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutTitle)
+    .expect(400)
+
+  const blogWithoutUrl = {...blogMocks.singleBlog}
+  delete blogWithoutUrl.url
+
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutUrl)
+    .expect(400)
+})
+
 test('blog likes field is by default set to 0', async () => {
   const blogWithoutLikes = {...blogMocks.singleBlog}
   delete blogWithoutLikes.likes
